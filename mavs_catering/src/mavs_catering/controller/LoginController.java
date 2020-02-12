@@ -1,6 +1,9 @@
 package mavs_catering.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,9 +49,10 @@ public class LoginController extends HttpServlet {
 				String action = request.getParameter("action");
 				username = request.getParameter("username");
 				String password = request.getParameter("password");	
-				
+				String currentTime = new SimpleDateFormat("YYYY-MM-DD").format(Calendar.getInstance().getTime());
+				session.setAttribute("currenttime", currentTime);
 				String url = "/Login.jsp";
-
+				
 				
 				if (request.getParameter("loginBtn")!=null) 
 				{
@@ -63,6 +67,7 @@ public class LoginController extends HttpServlet {
 					if (UerrorMsgs.getErrorMsg().equals("")) { //username & pw matches
 						session.removeAttribute("User");
 						session.removeAttribute("errorMsgs");
+						session.setAttribute("userid", username);
 						HttpSession currentSession = request.getSession();							
 						
 						user = UserDAO.getUser(username);				

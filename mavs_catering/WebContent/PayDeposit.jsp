@@ -6,6 +6,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<p>Welcome <c:out value="${DepositValue}" /></p>
 </head>
 <body>
   <form action="/mav_catering/EventController?action=PayDeposit" method="post">          
@@ -80,26 +81,26 @@
  </table>
  </form>
  
- <form action="/mav_catering/EventController?action=PayFinalDeposit" method="post">
-    <table style="width: 1200px; ">
+ <form name="EventDepositForm" action="EventController?action=payDeposit" method="post">
+    <table>
  <tr>
 	<td> Card Number : </td>
-	<td> <input name="idccNum" value="" type="text" maxlength="16"> </td>
-	<td style="padding:0px"><input name="statusError"  value="<c:out value='${errorMsgs.ccError}'/>" type="text"  style ="border: none;margin-left:100;width:185px"   disabled="disabled" maxlength="120">		        
+	<td><input type="text" id="idccNum" name="idccNum"></td>
+	<td style="padding:0px"><input name="invalidCCNum"  value="<c:out value='${CardErrors.invalidCCNum}'/>" type="text"  style ="border: none;margin-left:100;width:auto"></td>	        
 </tr>
 <tr>
 	<td> Security Code : </td>
-	<td> <input name="idccvNum" value="" type="text" maxlength="16"> </td>
-	<td style="padding:0px"><input name="statusError"  value="<c:out value='${errorMsgs.ccvError}'/>" type="text"  style ="border: none;margin-left:100;width:185px"   disabled="disabled" maxlength="120">		        
+	<td><input type="text" id="idcvvNum" name="idcvvNum"></td>
+	<td style="padding:0px"><input name="invalidCVVNum"  value="<c:out value='${CardErrors.invalidCVVNum}'/>" type="text"  style ="border: none;margin-left:100;width:auto"></td>	        
 </tr>
 <tr>
 	<td> Exp Date : </td>
-	<td> <input name="idexpDate" value="" type="text" maxlength="16"> </td>
-	<td style="padding:0px"><input name="statusError"  value="<c:out value='${errorMsgs.ccvError}'/>" type="text"  style =" border: none;margin-left:100;width:185px"   disabled="disabled" maxlength="120">		        
+	<td><input type="date" id="idexpDate" name="idexpDate"></td>
+	<td style="padding:0px"><input name="invalidExpDate"  value="<c:out value='${CardErrors.invalidExpDate}'/>" type="text"  style =" border: none;margin-left:100;width:auto"></td>		        
 </tr>
    
     </table>
-    <a href="<c:url value='/EventController?action=PayFinalDeposit&eventID=${REGISTEREVENT.eventID}'/>">Pay Deposit</a>
+      <input name="NextBtn" type="submit" value="PayDeposit">
  </form>
 
  

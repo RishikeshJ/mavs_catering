@@ -17,27 +17,26 @@
     
     <tr>
     <td> Last Name: </td>
-    <td> <input name="lastName" value="<c:out value='${Event.lastName}'/>" type="text" maxlength="50"> </td>
-  	<td> <input name="lastNameError"  value="<c:out value='${errorMsgs.lastNameError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" maxlength="60"> </td>
+    <td> <input name="lastName" value="<c:out value='${lname}'/>" type="text" maxlength="50" disabled="disabled"> </td>
+  	<td> <input name="duplicateResMsg"  value="<c:out value='${errorMsgs.duplicateResMsg}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" maxlength="60"> </td>
     </tr>
     
 	<tr>
     <td> First Name: </td>
-    <td> <input name="firstName" value="<c:out value='${Event.firstName}'/>" type="text" maxlength="50"> </td>
-  	<td> <input name="firstNameError"  value="<c:out value='${errorMsgs.firstNameError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" maxlength="60"> </td>
+    <td> <input name="firstName" value="<c:out value='${fname}'/>" type="text" maxlength="50" disabled="disabled"> </td>
     </tr>
     
     <tr>
 		<td>Date: </td>
 			<td>
-				<input type="date" id="iddate" name="iddate">
+				<input type="date" id="iddate" name="iddate"  disabled="disabled" value="<c:out value='${date}'/>" >
 			</td>
 	</tr>
 	
 	<tr>
 		<td>Time: </td>
 			<td>
-				<input type="time" id="startTime" name="idtime">
+				<input type="time" id="startTime" name="idtime" disabled="disabled" value="<c:out value='${time}'/>" >
 			</td>
 	</tr>
     
@@ -69,13 +68,12 @@
    	<tr>
     <td> Estimated Attendees: </td>
     <td> <input name="estAttendees" value="<c:out value='${Event.estAttendees}'/>" type="text" maxlength="16">  </td>
-  	<td> <input name="passwordError"  value="<c:out value='${errorMsgs.passwordError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"   disabled="disabled" maxlength="60"> </td>
+  
     </tr>
    	
    	<tr>
     <td> Event Name: </td>
     <td> <input name="eventName" value="<c:out value='${Event.eventName}'/>" type="text" maxlength="10">  </td>
-  	<td> <input name="utaIdError"  value="<c:out value='${errorMsgs.utaIdError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"   disabled="disabled" maxlength="60"> </td>
     </tr>
     
     <tr>
@@ -121,8 +119,8 @@
    	<tr>
     <td> Entertainment items: </td>
     <td><select name="entertainmentItems" >
-      <option id="music" value="music">Music</option>
-      <option id="non-music" value="non-music">Non-Music</option>
+      <option id="Music" value="Music">Music</option>
+      <option id="Non-Music" value="Non-Music">Non-Music</option>
     </select>
    	</tr>
    	
