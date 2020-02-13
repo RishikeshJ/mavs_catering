@@ -15,7 +15,7 @@ public static void registerEvent(Event event) {
 	Statement stmt = null;   
 	Connection conn = SQLConnection.getDBConnection();  
 	String registerUser = "INSERT INTO EVENTDETAILS (lastName, firstName, date, startTime, duration, hallName, "
-			+ "estAttendees, eventName, foodType, meal, mealFormality, drinkType, entertainmentItems, eventStatus,userid,ccnum,cvvnum,expdate) ";					
+			+ "estAttendees, eventName, foodType, meal, mealFormality, drinkType, entertainmentItems, eventStatus,userid,ccnum,ccpin,expdate,depositAmount) ";					
 	registerUser += " VALUES ('"  
 			+ event.getLastName()+ "','"
 			+ event.getfirstName()+ "','"		
@@ -33,8 +33,9 @@ public static void registerEvent(Event event) {
 			+ event.geteventStatuss()+ "','"
 			+ event.getuserid()+ "','"
 			+ event.getccnumber()+ "','"
-			+ event.getccsecuritycode()+ "','"
-			+ event.getccexpdate()+ "')" ;
+			+ event.getccpin()+ "','"
+			+ event.getccexpdate()+ "','"
+			+ event.getdepositAmount()+ "')" ;
 	System.out.println("Query: "+registerUser);
 	
 	try {   
@@ -98,19 +99,21 @@ public static ArrayList<Event> listEvents() {
 	return ReturnPendingEventList("SELECT * from eventdetails where eventStatus = 'Pending'");
 }
 
-public static void UpdateRequest(String userid, String date, String time, String hallname, String ccnum, String cvvnum, String expdate, String depositAmount) {
+public static void UpdateRequest(String userid, String date, String time, String hallname, String ccnum, String ccpin, String expdate, String depositAmount) {
 	Statement stmt = null;
 	Connection conn = SQLConnection.getDBConnection();
-	String Status = "Reservered";
+	String Status = "Reserved";
 	try
 	{
 		stmt = conn.createStatement();
 		conn.setAutoCommit(false);
 		String editUser = "UPDATE mavs_catering.eventdetails SET eventStatus = '"+Status+"', ccnum = '"+ccnum+"',"
-				+ " cvvnum = '"+cvvnum+"',"
-				+ "expdate = '"+expdate+"' "
-				+ "depositAmount = '"+depositAmount+"' "
-				+ "WHERE userid = '"+userid+"' and date = '"+date+"' and startTime = '"+time+"' and hallName = '"+hallname+"'";
+				+ " ccpin = '"+ccpin+"',"
+				+ " expdate = '"+expdate+"' "
+				+ " WHERE userid = '"+userid+"'"
+				+ " and date = '"+date+"'"
+				+ " and startTime = '"+time+"' "
+				+ " and hallName = '"+hallname+"'";
 		System.out.println(editUser);
 		stmt.executeUpdate(editUser);	
 		conn.commit();
@@ -130,8 +133,10 @@ public static int CheckReservations(String date, String time, String hallname) {
 		stmt = conn.createStatement();
 		conn.setAutoCommit(false);
 		String reservations = "select count(*) as count from eventdetails "
-				+ "WHERE date = '"+date+"' and startTime = '"+time+"' and hallName = '"+hallname+"'";
-		System.out.println(reservations);
+				+ "WHERE Time_to_sec('"+time+"') between Time_to_sec(startTime)"
+						+ " and (Time_to_Sec(concat(duration,':00'))  +  Time_to_sec(startTime)) and date = '"+date+"'"
+						+ " and eventStatus = 'Reserved' and hallName = '"+hallname+"'";
+		System.out.println(reservations); 
 		ResultSet Result = stmt.executeQuery(reservations);	
 		while(Result.next()) {count = Result.getString("count");}
 		

@@ -1,6 +1,7 @@
 package mavs_catering.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,13 +64,7 @@ public class EventController extends HttpServlet {
 		String url = "/EventBook.jsp";
 		if (action.equalsIgnoreCase("BookEvent") ) {  
 			
-			event.setEvent(request.getParameter("lastName"), request.getParameter("firstName"),
-					request.getParameter("iddate"),  request.getParameter("idtime"),
-					request.getParameter("duration"),request.getParameter("hallName"), 
-					request.getParameter("estAttendees"),request.getParameter("eventName"),
-					request.getParameter("foodType"),request.getParameter("meal"),
-					request.getParameter("mealFormality"),request.getParameter("drinkType"),
-					request.getParameter("entertainmentItems"),"Pending","","N/A","N/A","N/A",session.getAttribute("userid").toString());
+			
 			//UserErrorMsgs UerrorMsgs = new UserErrorMsgs();
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
 			
@@ -107,7 +102,6 @@ public class EventController extends HttpServlet {
 				DrinkCost = Integer.parseInt(estAttendees)* 15;
 			}
 			
-			
 			if(EntertainmentItems.equals("Music")) {
 				FinalDepositCost = FoodMealCost + MealFormalityCost + DrinkCost + 50;
 			}
@@ -117,9 +111,20 @@ public class EventController extends HttpServlet {
 			
 			session.setAttribute("DepositValue", FinalDepositCost);
 			
-			session.setAttribute("EVENT",event);
-			event.validateEvent(event, EerrorMsgs);
+			event.setEvent(session.getAttribute("fname").toString(),session.getAttribute("lname").toString()
+					,session.getAttribute("date").toString(),session.getAttribute("time").toString(),
+					request.getParameter("duration"),request.getParameter("hallName"), 
+					request.getParameter("estAttendees"),request.getParameter("eventName"),
+					request.getParameter("foodType"),request.getParameter("meal"),
+					request.getParameter("mealFormality"),request.getParameter("drinkType"),
+					request.getParameter("entertainmentItems"),"Pending","","N/A","N/A","N/A",session.getAttribute("userid").toString(),
+					String.valueOf(FinalDepositCost));
+				event.validateEvent(event, EerrorMsgs);
+				event.validateduration(session.getAttribute("date").toString(),
+					session.getAttribute("time").toString(),
+					request.getParameter("duration"),EerrorMsgs);
 			session.setAttribute("errorMsgs",EerrorMsgs);
+			session.setAttribute("EVENT", event);
 			if (EerrorMsgs.getErrorMsg().equals("")) {
 				EventDAO.registerEvent(event);
 				session.removeAttribute("errorMsgs");
@@ -132,12 +137,17 @@ public class EventController extends HttpServlet {
         	//Event event = new Event();	
         	event = (Event) session.getAttribute("EVENT");
         	String ccnumber = request.getParameter("idccNum");
-        	String ccseccode = request.getParameter("idcvvNum");
+        	String ccseccode = request.getParameter("idinvalidpin");
         	String expdate = request.getParameter("idexpDate");
         	event.setccnumber(ccnumber);
-        	event.setccsecuritycode(ccseccode);
+        	event.setccpin(ccseccode);
         	event.setccexpdate(expdate);
-        	event.validateCardinfo(event, CarderrorMsgs);
+        	try {
+				event.validateCardinfo(event, CarderrorMsgs);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         	session.setAttribute("CardErrors", CarderrorMsgs);
         	String depositAmount = session.getAttribute("DepositValue").toString();
         	if (CarderrorMsgs.getErrorMsg().equals("")) 

@@ -6,9 +6,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<p>Welcome <c:out value="${DepositValue}" /></p>
 </head>
 <body>
+	<p>Deposit Amount is : <c:out value="${DepositValue}" /></p>
+	<br>
   <form action="/mav_catering/EventController?action=PayDeposit" method="post">          
        <table border="1" class="myTable"> 
 			<tr>
@@ -90,8 +91,8 @@
 </tr>
 <tr>
 	<td> Security Code : </td>
-	<td><input type="text" id="idcvvNum" name="idcvvNum"></td>
-	<td style="padding:0px"><input name="invalidCVVNum"  value="<c:out value='${CardErrors.invalidCVVNum}'/>" type="text"  style ="border: none;margin-left:100;width:auto"></td>	        
+	<td><input type="text" id="idinvalidpin" name="idinvalidpin"></td>
+	<td style="padding:0px"><input name="invalidpin"  value="<c:out value='${CardErrors.invalidpin}'/>" type="text"  style ="border: none;margin-left:100;width:auto"></td>	        
 </tr>
 <tr>
 	<td> Exp Date : </td>

@@ -3,6 +3,8 @@ package mavs_catering.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,6 +43,17 @@ public class UserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();	
 		String action = request.getParameter("action");
+		String url = "/Login.jsp";
+		if(action.equalsIgnoreCase("EventRequest")) {
+			 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
+			  LocalDateTime now = LocalDateTime.now();  
+			   
+			session.setAttribute("CurrentTime", dtf.format(now));
+			session.setAttribute("CurrentDate", java.time.LocalDate.now());
+			//2020-02-12
+			url = "/EventRequest.jsp";
+		}
+		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 	/**
@@ -49,7 +62,7 @@ public class UserController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();	
 		String action = request.getParameter("action");
-		
+	
 		String url = "/Login.jsp";
 		
 		if (action.equalsIgnoreCase("BookEvent") ) {
@@ -60,6 +73,11 @@ public class UserController extends HttpServlet {
 			String selectedTime = request.getParameter("idtime");
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
 			event.validateSelectedDateTime(selectedDate, selectedTime, EerrorMsgs);
+			try {
+				event.validateselectedDate(selectedDate, EerrorMsgs);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			session.setAttribute("TIMEERROR", EerrorMsgs);
 			if (EerrorMsgs.getErrorMsg().equals("")) {
 				session.removeAttribute("errorMsgs");
@@ -69,7 +87,6 @@ public class UserController extends HttpServlet {
 				session.setAttribute("lname", lastname);
 				session.setAttribute("date", selectedDate);
 				session.setAttribute("time", selectedTime);
-				
 				url = "/EventBook.jsp";
 			}
 			else {

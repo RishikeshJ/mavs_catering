@@ -61,19 +61,20 @@
       <option id="KC" value="KC">KC</option>
       <option id="Arlington" value="Arlington">Arlington</option>
       <option id="Shard" value="Shard">Shard</option>
-      <option id="Liberty" value="Shard">Shard</option>
+      <option id="Liberty" value="Liberty">Liberty</option>
     </select>
    	</tr>
    	
    	<tr>
     <td> Estimated Attendees: </td>
     <td> <input name="estAttendees" value="<c:out value='${Event.estAttendees}'/>" type="text" maxlength="16">  </td>
-  
+  <td> <input name="capacityError"  value="<c:out value='${errorMsgs.capacityError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" maxlength="60"> </td>
     </tr>
    	
    	<tr>
     <td> Event Name: </td>
     <td> <input name="eventName" value="<c:out value='${Event.eventName}'/>" type="text" maxlength="10">  </td>
+    <td> <input name="eventNameError"  value="<c:out value='${errorMsgs.eventNameError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" maxlength="60"> </td>
     </tr>
     
     <tr>
@@ -111,8 +112,8 @@
    	<tr>
     <td> Drink Type: </td>
     <td><select name="drinkType" >
-      <option id="Standard" value="Standard">Standard</option>
-      <option id="Alcohol" value="Alcohol">Alcohol</option>
+      <option id="Standard" value="Standard">Non-Alcohol</option>
+      <option id="Alcohol" value="Alcohol" selected="selected">Alcohol</option>
     </select>
    	</tr>
    	
